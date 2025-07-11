@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:sqflite_crud_flutter/models/employee.dart';
 
-class AddEmployee extends StatefulWidget {
-  const AddEmployee({super.key});
+class EditEmployee extends StatefulWidget {
+  final Employee employee;
+  const EditEmployee({super.key, required this.employee});
 
   @override
-  State<AddEmployee> createState() => _AddEmployeeState();
+  State<EditEmployee> createState() => _AddEmployeeState();
 }
 
-class _AddEmployeeState extends State<AddEmployee> {
+class _AddEmployeeState extends State<EditEmployee> {
   //for switch() widget
   bool isFemale = false;
 
@@ -21,6 +23,13 @@ class _AddEmployeeState extends State<AddEmployee> {
 
   @override
   Widget build(BuildContext context) {
+
+    //Pass the data on CONTROLLERS from Navigation.
+    idController.text = '${widget.employee.empId}';
+    nameController.text = widget.employee.empName;
+    designationController.text = widget.employee.empDesignation;
+    isFemale = widget.employee.isMale ? false : true;
+
     return Scaffold(
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
@@ -28,7 +37,7 @@ class _AddEmployeeState extends State<AddEmployee> {
         backgroundColor: Colors.blue,
         centerTitle: true,
         title: Text(
-          'Add Employee',
+          'Update Employee',
           style: TextStyle(
             color: Colors.white
           ),
@@ -41,6 +50,7 @@ class _AddEmployeeState extends State<AddEmployee> {
             children: <Widget>[
               // Emp Id
               TextField(
+                enabled: false,
                 focusNode: _focusNode,
                 controller: idController,
                 keyboardType: TextInputType.number,
@@ -112,7 +122,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                         ),
                         onPressed: (){},
                         child: Text(
-                          'Add',
+                          'Update',
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
