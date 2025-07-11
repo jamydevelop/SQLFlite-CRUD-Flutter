@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sqflite_crud_flutter/screens/add_employee.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -23,6 +24,16 @@ class _HomeState extends State<Home> {
       ),
       body: Center(
         child: Text('SQFLite CRUD'),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const AddEmployee()));
+        },
+        backgroundColor: Colors.blue,
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
       ),
     );
   }
