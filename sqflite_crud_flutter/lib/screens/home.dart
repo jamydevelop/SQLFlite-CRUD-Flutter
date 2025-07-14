@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sqflite_crud_flutter/database/mydatabase.dart';
 import 'package:sqflite_crud_flutter/models/employee.dart';
 import 'package:sqflite_crud_flutter/screens/add_employee.dart';
 import 'package:sqflite_crud_flutter/screens/edit_employee.dart';
@@ -14,14 +15,41 @@ class _HomeState extends State<Home> {
 
   List<Employee> employees = List.empty(growable: true);
   bool isLoading = false;
+  //Create instance of Database
+  final MyDatabase _myDatabase = MyDatabase();
+  int count = 0;
+
+  //Get data from database
+  getDataFromDb() async {
+
+    //get a Map of data using "_myDatabase" object.
+    List<Map<String, Object?>> map = await _myDatabase.getEmpList();
+
+    /**
+     *  Get all the data from map and convert it to Employee model,
+     *  before it adds on the list
+     */
+    for(int i = 0; i < map.length; i++) {
+      employees.add(Employee.toEmp(map[i]));
+    }
+
+    //This will get the total count of data that's in the database.
+    await _myDatabase.countEmp();
+
+    //This will make the loading stop.
+    setState(() {
+      isLoading = false;
+    });
+  }
 
   @override
   void initState() {
-    employees.add(Employee(empId: 1, empName: 'Estes', empDesignation: 'Roam', isMale: true));
-    employees.add(Employee(empId: 2, empName: 'Vexana', empDesignation: 'Mage', isMale: false));
-    employees.add(Employee(empId: 3, empName: 'Ixia', empDesignation: 'Marksman', isMale: false));
-    employees.add(Employee(empId: 4, empName: 'Phoveious', empDesignation: 'Exp', isMale: true));
-    employees.add(Employee(empId: 5, empName: 'Hayabusa', empDesignation: 'Jungle', isMale: true));
+    // employees.add(Employee(empId: 1, empName: 'Estes', empDesignation: 'Roam', isMale: true));
+    // employees.add(Employee(empId: 2, empName: 'Vexana', empDesignation: 'Mage', isMale: false));
+    // employees.add(Employee(empId: 3, empName: 'Ixia', empDesignation: 'Marksman', isMale: false));
+    // employees.add(Employee(empId: 4, empName: 'Phoveious', empDesignation: 'Exp', isMale: true));
+    // employees.add(Employee(empId: 5, empName: 'Hayabusa', empDesignation: 'Jungle', isMale: true));
+    getDataFromDb();
     super.initState();
   }
   @override
@@ -39,6 +67,7 @@ class _HomeState extends State<Home> {
       ),
       body: isLoading
       ? Center(child: CircularProgressIndicator())
+      : employees.isEmpty ? Center(child: Text('No Employee yet...'))
       : ListView.builder(
           itemCount: employees.length,
           itemBuilder: (context,index) => Card(
