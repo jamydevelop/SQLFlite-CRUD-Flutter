@@ -4,6 +4,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_crud_flutter/models/employee.dart';
 
 class MyDatabase {
+
   // Singleton instance of the database class
   static final MyDatabase _myDatabase = MyDatabase._privateConstructor();
 
@@ -11,9 +12,8 @@ class MyDatabase {
   MyDatabase._privateConstructor();
 
   // Factory constructor that returns the singleton instance
-  factory MyDatabase() {
-    return _myDatabase;
-  }
+  factory MyDatabase() => _myDatabase;
+
 
   // SQLite database instance (nullable until initialized)
   static Database? _database;
@@ -34,6 +34,7 @@ class MyDatabase {
 
   // Initializes and opens the SQLite database, creating it if it doesn't exist
   Future<Database> _initializeDatabase() async {
+
     Directory directory = await getApplicationDocumentsDirectory();
     String path = '${directory.path}/emp.db';
 
