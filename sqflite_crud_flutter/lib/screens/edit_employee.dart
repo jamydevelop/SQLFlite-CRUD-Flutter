@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:sqflite_crud_flutter/database/my_database.dart';
 import 'package:sqflite_crud_flutter/models/employee.dart';
+import 'package:sqflite_crud_flutter/screens/home.dart';
 
 class EditEmployee extends StatefulWidget {
+  final MyDatabase mydatabase;
   final Employee employee;
-  const EditEmployee({super.key, required this.employee});
+  const EditEmployee({super.key, required this.employee, required this.mydatabase});
 
   @override
   State<EditEmployee> createState() => _AddEmployeeState();
@@ -120,7 +123,31 @@ class _AddEmployeeState extends State<EditEmployee> {
                           backgroundColor: Colors.purple,
                           shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(8.0))
                         ),
-                        onPressed: (){},
+                        onPressed: () async {
+                           Employee employee = Employee(
+                            empId: int.parse(idController.text),
+                            empName: nameController.text,
+                            empDesignation: designationController.text,
+                            isMale: !isFemale);
+
+                            await widget.mydatabase.updateEmp(employee);
+
+                            if(!mounted) return;
+
+                              //Show snackbar if added.
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                backgroundColor: Colors.orange,
+                                content: Text('${employee.empName} is updated!')));
+
+                              //Navigate to previous route.
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const Home(),
+                                ),
+                                (route) => false);
+
+                        },
                         child: Text(
                           'Update',
                           style: TextStyle(color: Colors.white),

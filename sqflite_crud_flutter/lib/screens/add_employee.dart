@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sqflite_crud_flutter/database/mydatabase.dart';
+import 'package:sqflite_crud_flutter/database/my_database.dart';
 import 'package:sqflite_crud_flutter/models/employee.dart';
 import 'package:sqflite_crud_flutter/screens/home.dart';
 
@@ -48,7 +48,7 @@ class _AddEmployeeState extends State<AddEmployee> {
             children: <Widget>[
               // Emp Id
               TextField(
-                focusNode: _focusNode,
+                //focusNode: _focusNode,
                 controller: idController,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
@@ -126,10 +126,11 @@ class _AddEmployeeState extends State<AddEmployee> {
 
                             await widget.myDatabase.insertEmp(employee);
 
-                            if(mounted) {
+                            if(!mounted) return;
 
                               //Show snackbar if added.
                               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                backgroundColor: Colors.green,
                                 content: Text('${employee.empName} is added!')));
 
                               //Navigate to previous route.
@@ -139,7 +140,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                                   builder: (context) => const Home(),
                                 ),
                                 (route) => false);
-                            }
+
                         },
                         child: Text(
                           'Add',

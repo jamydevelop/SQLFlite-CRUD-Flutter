@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sqflite_crud_flutter/database/mydatabase.dart';
+import 'package:sqflite_crud_flutter/database/my_database.dart';
 import 'package:sqflite_crud_flutter/models/employee.dart';
 import 'package:sqflite_crud_flutter/screens/add_employee.dart';
 import 'package:sqflite_crud_flutter/screens/edit_employee.dart';
@@ -33,8 +33,8 @@ class _HomeState extends State<Home> {
       employees.add(Employee.toEmp(map[i]));
     }
 
-    //This will get the total count of data that's in the database.
-    await _myDatabase.countEmp();
+    //This will get the total count of data that's in the database and pass it in variable.
+    count = await _myDatabase.countEmp();
 
     //This will make the loading stop.
     setState(() {
@@ -58,7 +58,7 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         backgroundColor: Colors.blue,
         title: Text(
-          'SQFLite CRUD',
+          'Employee\'s Count: $count',
           style: TextStyle(
             color: Colors.white
           ),
@@ -75,7 +75,7 @@ class _HomeState extends State<Home> {
               onTap: () {
                 Navigator.push(context,
                   MaterialPageRoute(builder: (context) =>
-                    EditEmployee(employee: employees[index],)
+                    EditEmployee(employee: employees[index], mydatabase: _myDatabase)
                   ),
                 );
               },
@@ -88,7 +88,29 @@ class _HomeState extends State<Home> {
               ),
               subtitle: Text(employees[index].empDesignation),
               trailing: IconButton(
-                onPressed: (){},
+                onPressed: () async {
+
+                  String name = employees[index].empName;
+
+                  await _myDatabase.deleteEmp(employees[index]);
+
+
+                  if(mounted) {
+
+                              //Show snackbar if added.
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                backgroundColor: Colors.red,
+                                content: Text('$name is deleted!')));
+
+                              //Navigate to previous route.
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const Home(),
+                                ),
+                                (route) => false);
+                            }
+                },
                 icon: Icon(Icons.delete),
               ),
             ),
