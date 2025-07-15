@@ -1,99 +1,96 @@
 import 'dart:io';
-
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_crud_flutter/models/employee.dart';
 
 class MyDatabase {
-
-  //Instance of database
+  // Singleton instance of the database class
   static final MyDatabase _myDatabase = MyDatabase._privateConstructor();
 
-  // Private Contructor
+  // Private named constructor for singleton implementation
   MyDatabase._privateConstructor();
 
-  //Database Variable
-  static late Database _database;
-
-  //factory method
+  // Factory constructor that returns the singleton instance
   factory MyDatabase() {
     return _myDatabase;
   }
 
-  //Variables for column
+  // SQLite database instance (nullable until initialized)
+  static Database? _database;
+
+  // Table and column definitions
   final String tableName = 'emp';
-  final String columnId = 'empId';
+  final String columnId = 'id';
   final String columnName = 'name';
-  final String columnDesignation ='designation';
+  final String columnDesignation = 'desg';
   final String columnIsMale = 'isMale';
 
-  //function to initialize database
-  initializeDatabase() async {
+  // Getter that ensures the database is initialized before use
+  Future<Database> get database async {
+    if (_database != null) return _database!;
+    _database = await _initializeDatabase();
+    return _database!;
+  }
 
-    //Get the path of file system where to store database.
+  // Initializes and opens the SQLite database, creating it if it doesn't exist
+  Future<Database> _initializeDatabase() async {
     Directory directory = await getApplicationDocumentsDirectory();
+    String path = '${directory.path}/emp.db';
 
-    //Path
-    String path = '${directory.path}emp.db';
-
-    //Create database
-    _database = await openDatabase(
+    return await openDatabase(
       path,
       version: 1,
-      onCreate: (db,version) async {
-      await db.execute('CREATE TABLE $tableName ($columnId INTEGER PRIMARY KEY, $columnName TEXT, $columnDesignation TEXT, $columnIsMale BOOLEAN)');
-    });
+      onCreate: (db, version) async {
+        await db.execute('''
+          CREATE TABLE $tableName (
+            $columnId INTEGER PRIMARY KEY,
+            $columnName TEXT,
+            $columnDesignation TEXT,
+            $columnIsMale BOOLEAN
+          )
+        ''');
+      },
+    );
   }
 
-  //------ CRUDE -----------
-
-  //**READ DATA**
+  // Fetches all employee records from the database, sorted by name
   Future<List<Map<String, Object?>>> getEmpList() async {
-
-    //1st way
-    //List<Map<String, Object?>> result = await _database.rawQuery('SELECT * FROM $tableName');
-
-    //2nd way
-    List<Map<String, Object?>> result =
-    await _database.query(tableName, orderBy: columnName);
-
-    return result;
+    final db = await database;
+    return await db.query(tableName, orderBy: columnName);
   }
 
-  //**INSERT DATA**
+  // Inserts a new employee record into the database
   Future<int> insertEmp(Employee employee) async {
-
-    int rowsInserted = await _database.insert(tableName, employee.toMap());
-
-    return rowsInserted;
+    final db = await database;
+    return await db.insert(tableName, employee.toMap());
   }
 
-    //**Update DATA**
+  // Updates an existing employee record based on the employee ID
   Future<int> updateEmp(Employee employee) async {
-
-    int updateInserted = await _database.update(tableName, employee.toMap(), where: '$columnId = ?', whereArgs: [employee.empId]);
-
-    return updateInserted;
+    final db = await database;
+    return await db.update(
+      tableName,
+      employee.toMap(),
+      where: '$columnId = ?',
+      whereArgs: [employee.empId],
+    );
   }
 
-    //**Delete DATA**
+  // Deletes an employee record from the database by ID
   Future<int> deleteEmp(Employee employee) async {
-
-    int deleteInserted = await _database
-      .delete(tableName, where: '$columnId = ?', whereArgs: [employee.empId]);
-
-    return deleteInserted;
+    final db = await database;
+    return await db.delete(
+      tableName,
+      where: '$columnId = ?',
+      whereArgs: [employee.empId],
+    );
   }
 
-  //**COUNT METHOD **
+  // Returns the total number of employee records in the table
   Future<int> countEmp() async {
+    final db = await database;
     List<Map<String, Object?>> result =
-      await _database.rawQuery('SELECT COUNT(*) FROM ${tableName}');
-
-      int count = Sqflite.firstIntValue(result) ?? 0;
-
-      return count;
+        await db.rawQuery('SELECT COUNT(*) FROM $tableName');
+    return Sqflite.firstIntValue(result) ?? 0;
   }
-
-
 }

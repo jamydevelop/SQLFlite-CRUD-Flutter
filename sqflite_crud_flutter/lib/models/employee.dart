@@ -18,9 +18,9 @@ class Employee {
   //convert to map
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'empId': empId,
-      'empName': empName,
-      'empDesignation': empDesignation,
+      'id': empId,
+      'name': empName,
+      'desg': empDesignation,
       'isMale': isMale,
     };
   }
@@ -30,7 +30,7 @@ class Employee {
     empId: map['id'],
     empName: map['name'],
     empDesignation: map['desg'],
-    isMale: map['isMale']);
+    isMale: map['isMale'] == 1 ? true : false);
 
   factory Employee.fromMap(Map<String, dynamic> map) {
     return Employee(

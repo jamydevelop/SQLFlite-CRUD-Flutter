@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:sqflite_crud_flutter/database/mydatabase.dart';
+import 'package:sqflite_crud_flutter/models/employee.dart';
+import 'package:sqflite_crud_flutter/screens/home.dart';
 
 class AddEmployee extends StatefulWidget {
-  const AddEmployee({super.key});
+  final MyDatabase myDatabase;
+  const AddEmployee({super.key,required this.myDatabase});
 
   @override
   State<AddEmployee> createState() => _AddEmployeeState();
 }
 
 class _AddEmployeeState extends State<AddEmployee> {
+
+
+
   //for switch() widget
   bool isFemale = false;
 
@@ -110,7 +117,30 @@ class _AddEmployeeState extends State<AddEmployee> {
                           backgroundColor: Colors.purple,
                           shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(8.0))
                         ),
-                        onPressed: (){},
+                        onPressed: () async {
+                          Employee employee = Employee(
+                            empId: int.parse(idController.text),
+                            empName: nameController.text,
+                            empDesignation: designationController.text,
+                            isMale: !isFemale);
+
+                            await widget.myDatabase.insertEmp(employee);
+
+                            if(mounted) {
+
+                              //Show snackbar if added.
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text('${employee.empName} is added!')));
+
+                              //Navigate to previous route.
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const Home(),
+                                ),
+                                (route) => false);
+                            }
+                        },
                         child: Text(
                           'Add',
                           style: TextStyle(color: Colors.white),

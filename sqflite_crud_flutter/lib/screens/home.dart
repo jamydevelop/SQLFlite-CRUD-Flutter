@@ -96,7 +96,7 @@ class _HomeState extends State<Home> {
         ),
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context) => const AddEmployee()));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => AddEmployee(myDatabase: _myDatabase)));
         },
         backgroundColor: Colors.blue,
         child: Icon(
