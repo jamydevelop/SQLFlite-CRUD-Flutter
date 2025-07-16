@@ -35,7 +35,7 @@ class MyDatabase {
   // Initializes and opens the SQLite database, creating it if it doesn't exist
   Future<Database> _initializeDatabase() async {
 
-    Directory directory = await getApplicationDocumentsDirectory();
+    Directory directory = await getApplicationDocumentsDirectory(); // From import 'package:path_provider/path_provider.dart';
     String path = '${directory.path}/emp.db';
 
     return await openDatabase(
