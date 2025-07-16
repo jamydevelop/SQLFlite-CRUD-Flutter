@@ -4,39 +4,39 @@ import 'dart:convert';
 Employee toEmployee(Map<String, Object?> map) => Employee.toEmp(map);
 
 class Employee {
-  final int empId;
-  final String empName;
-  final String empDesignation;
+  final int id;
+  final String name;
+  final String desg;
   final bool isMale;
 
   Employee({
-    required this.empId,
-    required this.empName,
-    required this.empDesignation,
+    required this.id,
+    required this.name,
+    required this.desg,
     required this.isMale});
 
   //convert to map
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'id': empId,
-      'name': empName,
-      'desg': empDesignation,
+      'id': id,
+      'name': name,
+      'desg': desg,
       'isMale': isMale,
     };
   }
 
   //convert Map to Employee
   factory  Employee.toEmp(Map<String, dynamic> map) => Employee(
-    empId: map['id'],
-    empName: map['name'],
-    empDesignation: map['desg'],
+    id: map['id'],
+    name: map['name'],
+    desg: map['desg'],
     isMale: map['isMale'] == 1 ? true : false);
 
   factory Employee.fromMap(Map<String, dynamic> map) {
     return Employee(
-      empId: map['empId'] as int,
-      empName: map['empName'] as String,
-      empDesignation: map['empDesignation'] as String,
+      id: map['empId'] as int,
+      name: map['empName'] as String,
+      desg: map['empDesignation'] as String,
       isMale: map['isMale'] as bool,
     );
   }

@@ -17,11 +17,11 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
-    employees.add(Employee(empId: 1, empName: 'Estes', empDesignation: 'Roam', isMale: true));
-    employees.add(Employee(empId: 2, empName: 'Vexana', empDesignation: 'Mage', isMale: false));
-    employees.add(Employee(empId: 3, empName: 'Ixia', empDesignation: 'Marksman', isMale: false));
-    employees.add(Employee(empId: 4, empName: 'Phoveious', empDesignation: 'Exp', isMale: true));
-    employees.add(Employee(empId: 5, empName: 'Hayabusa', empDesignation: 'Jungle', isMale: true));
+    employees.add(Employee(id: 1, name: 'Estes', desg: 'Roam', isMale: true));
+    employees.add(Employee(id: 2, name: 'Vexana', desg: 'Mage', isMale: false));
+    employees.add(Employee(id: 3, name: 'Ixia', desg: 'Marksman', isMale: false));
+    employees.add(Employee(id: 4, name: 'Phoveious', desg: 'Exp', isMale: true));
+    employees.add(Employee(id: 5, name: 'Hayabusa', desg: 'Jungle', isMale: true));
     super.initState();
   }
   @override
@@ -54,10 +54,10 @@ class _HomeState extends State<Home> {
                 backgroundColor:  employees[index].isMale ? Colors.blue[300] : Colors.pink[300],
                 child: Icon(employees[index].isMale ? Icons.male : Icons.female, color: Colors.white),
               ),
-              title: Text('${employees[index].empName} (${employees[index].empId})',
+              title: Text('${employees[index].name} (${employees[index].id})',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
-              subtitle: Text(employees[index].empDesignation),
+              subtitle: Text(employees[index].desg),
               trailing: IconButton(
                 onPressed: (){},
                 icon: Icon(Icons.delete),

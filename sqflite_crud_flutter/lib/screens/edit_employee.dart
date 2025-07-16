@@ -25,9 +25,9 @@ class _AddEmployeeState extends State<EditEmployee> {
   Widget build(BuildContext context) {
 
     //Pass the data on CONTROLLERS from Navigation.
-    idController.text = '${widget.employee.empId}';
-    nameController.text = widget.employee.empName;
-    designationController.text = widget.employee.empDesignation;
+    idController.text = '${widget.employee.id}';
+    nameController.text = widget.employee.name;
+    designationController.text = widget.employee.desg;
     isFemale = widget.employee.isMale ? false : true;
 
     return Scaffold(
