@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:sqflite_crud_flutter/models/employee.dart';
+import 'package:sqflite_crud_flutter/screens/home.dart';
+import 'package:sqflite_crud_flutter/services/employee_database.dart';
 
 class AddEmployee extends StatefulWidget {
   const AddEmployee({super.key});
@@ -11,6 +14,7 @@ class _AddEmployeeState extends State<AddEmployee> {
   //for switch() widget
   bool isFemale = false;
 
+  final EmployeeDatabase _empDb = EmployeeDatabase();
   //focusNode
   final FocusNode _focusNode = FocusNode();
 
@@ -110,7 +114,34 @@ class _AddEmployeeState extends State<AddEmployee> {
                           backgroundColor: Colors.purple,
                           shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(8.0))
                         ),
-                        onPressed: (){},
+                        onPressed: () async {
+                          Employee emp = Employee(
+                            id: int.parse(idController.text),
+                            name: nameController.text,
+                            desg: designationController.text,
+                            isMale: !isFemale,
+                          );
+
+                          await _empDb.insertEmp(emp);
+
+                          if(!mounted) return;
+
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text('$nameController is successfully added!')));
+
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(builder: (context) => Home()),
+                            (route) => false
+                          );
+
+                          idController.text = '';
+                          nameController.text = '';
+                          designationController.text = '';
+                          isFemale = false;
+
+
+                        },
                         child: Text(
                           'Add',
                           style: TextStyle(color: Colors.white),
@@ -123,7 +154,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                           nameController.text = '';
                           designationController.text = '';
                           isFemale = false;
-                          _focusNode.requestFocus();
+
                           });
                         },
                         style: ElevatedButton.styleFrom(
