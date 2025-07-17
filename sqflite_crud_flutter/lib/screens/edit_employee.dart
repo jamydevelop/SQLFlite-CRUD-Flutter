@@ -9,10 +9,10 @@ class EditEmployee extends StatefulWidget {
   const EditEmployee({super.key, required this.employee, required this.mydatabase});
 
   @override
-  State<EditEmployee> createState() => _AddEmployeeState();
+  State<EditEmployee> createState() => _EditEmployeeState();
 }
 
-class _AddEmployeeState extends State<EditEmployee> {
+class _EditEmployeeState extends State<EditEmployee> {
   //for switch() widget
   bool isFemale = false;
 
