@@ -34,9 +34,9 @@ class Employee {
 
   factory Employee.fromMap(Map<String, dynamic> map) {
     return Employee(
-      id: map['empId'] as int,
-      name: map['empName'] as String,
-      desg: map['empDesignation'] as String,
+      id: map['id'] as int,
+      name: map['name'] as String,
+      desg: map['desg'] as String,
       isMale: map['isMale'] as bool,
     );
   }

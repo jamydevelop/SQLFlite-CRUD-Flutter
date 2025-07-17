@@ -1,7 +1,6 @@
-import 'dart:io';
 import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:sqflite_crud_flutter/models/employee.dart';
 
 class EmployeeDatabase {
 
@@ -24,8 +23,15 @@ class EmployeeDatabase {
   String columnDesg = 'desg';
   String columnIsMale = 'isMale';
 
-  Future<Database> _initDatabase() async {
+  //Getter that ensures the database is initialized before use.
+  Future<Database> get database async {
+    if (_database != null) return _database!;
+    _database = await _initDatabase();
+    return _database!;
+  }
 
+  //Initialize and open the SQLite database, creating if it doesn't exist.
+  Future<Database> _initDatabase() async {
     String directory = await getDatabasesPath();
     String path = join(directory, 'emp.db');
 
@@ -33,16 +39,28 @@ class EmployeeDatabase {
       path,
       version: 1,
       onCreate: (db,version) async {
-        await db.execute(
-          '''
+        await db.execute('''
           CREATE TABLE $tableName (
-              $columnId
-            )
-          '''
-        );
+              $columnId INTEGER PRIMARY KEY,
+              $columnName TEXT,
+              $columnDesg TEXT,
+              $columnIsMale BOOLEAN
+          )
+        ''');
       }
     );
+  }
 
+  //Fetch all employees from the database sorted by names.
+  Future<List<Map<String,Object?>>> getAllEmpList() async {
+    final db = await database;
+    return db.query(tableName, orderBy: columnName);
+  }
+
+  //Insert employee to the database.
+  Future<int> insertEmp(Employee employee) async {
+    final db = await database;
+    return await db.insert(tableName, employee.toMap());
   }
 
 }
