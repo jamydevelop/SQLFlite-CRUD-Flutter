@@ -37,6 +37,7 @@ class Employee {
       id: map['id'] as int,
       name: map['name'] as String,
       desg: map['desg'] as String,
+      isMale: map['isMale'] as bool,
     );
   }
 

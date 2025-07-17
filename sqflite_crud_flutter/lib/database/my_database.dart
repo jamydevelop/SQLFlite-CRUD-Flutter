@@ -74,7 +74,7 @@ class MyDatabase {
       tableName,
       employee.toMap(),
       where: '$columnId = ?',
-      whereArgs: [employee.empId],
+      whereArgs: [employee.id],
     );
   }
 
@@ -84,7 +84,7 @@ class MyDatabase {
     return await db.delete(
       tableName,
       where: '$columnId = ?',
-      whereArgs: [employee.empId],
+      whereArgs: [employee.id],
     );
   }
 

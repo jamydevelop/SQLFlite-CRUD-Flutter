@@ -29,9 +29,9 @@ class _EditEmployeeState extends State<EditEmployee> {
     // TODO: implement initState
     super.initState();
     //Pass the data on CONTROLLERS from Navigation.
-    idController.text = '${widget.employee.empId}';
-    nameController.text = widget.employee.empName;
-    designationController.text = widget.employee.empDesignation;
+    idController.text = '${widget.employee.id}';
+    nameController.text = widget.employee.name;
+    designationController.text = widget.employee.desg;
     isFemale = widget.employee.isMale ? false : true;
   }
   @override
@@ -131,9 +131,9 @@ class _EditEmployeeState extends State<EditEmployee> {
                         ),
                         onPressed: () async {
                            Employee employee = Employee(
-                            empId: int.parse(idController.text),
-                            empName: nameController.text,
-                            empDesignation: designationController.text,
+                            id: int.parse(idController.text),
+                            name: nameController.text,
+                            desg: designationController.text,
                             isMale: !isFemale);
 
                             await widget.mydatabase.updateEmp(employee);
@@ -143,7 +143,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                               //Show snackbar if added.
                               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                 backgroundColor: Colors.orange,
-                                content: Text('${employee.empName} is updated!')));
+                                content: Text('${employee.name} is updated!')));
 
                               //Navigate to previous route.
                               Navigator.pushAndRemoveUntil(
