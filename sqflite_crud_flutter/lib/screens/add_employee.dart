@@ -4,14 +4,17 @@ import 'package:sqflite_crud_flutter/screens/home.dart';
 import 'package:sqflite_crud_flutter/services/employee_database.dart';
 
 class AddEmployee extends StatefulWidget {
-  final EmployeeDatabase employeeDatabase;
-  const AddEmployee({super.key, required this.employeeDatabase});
+  final EmployeeDatabase myDatabase;
+  const AddEmployee({super.key,required this.myDatabase});
 
   @override
   State<AddEmployee> createState() => _AddEmployeeState();
 }
 
 class _AddEmployeeState extends State<AddEmployee> {
+
+
+
   //for switch() widget
   bool isFemale = false;
 
@@ -45,7 +48,7 @@ class _AddEmployeeState extends State<AddEmployee> {
             children: <Widget>[
               // Emp Id
               TextField(
-                focusNode: _focusNode,
+                //focusNode: _focusNode,
                 controller: idController,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
@@ -115,31 +118,28 @@ class _AddEmployeeState extends State<AddEmployee> {
                           shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(8.0))
                         ),
                         onPressed: () async {
-                          Employee emp = Employee(
+                          Employee employee = Employee(
                             id: int.parse(idController.text),
                             name: nameController.text,
                             desg: designationController.text,
-                            isMale: !isFemale,
-                          );
+                            isMale: !isFemale);
 
-                          await widget.employeeDatabase.insertEmp(emp);
+                            await widget.myDatabase.insertEmp(employee);
 
-                          if(!mounted) return;
+                            if(!mounted) return;
 
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text('$nameController is successfully added!')));
+                              //Show snackbar if added.
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                backgroundColor: Colors.green,
+                                content: Text('${employee.name} is added!')));
 
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(builder: (context) => Home()),
-                            (route) => false
-                          );
-
-                          idController.text = '';
-                          nameController.text = '';
-                          designationController.text = '';
-                          isFemale = false;
-
+                              //Navigate to previous route.
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const Home(),
+                                ),
+                                (route) => false);
 
                         },
                         child: Text(
@@ -154,7 +154,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                           nameController.text = '';
                           designationController.text = '';
                           isFemale = false;
-
+                          _focusNode.requestFocus();
                           });
                         },
                         style: ElevatedButton.styleFrom(

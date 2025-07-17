@@ -14,7 +14,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
 
   List<Employee> employees = List.empty(growable: true);
-  bool isLoading = false;
+  bool isLoading = true;
 
   //Initialized database
   final EmployeeDatabase _empDB = EmployeeDatabase();
@@ -25,6 +25,10 @@ class _HomeState extends State<Home> {
     for(int i = 0; i < map.length; i++) {
       employees.add(Employee.toEmp(map[i]));
     }
+
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -52,6 +56,7 @@ class _HomeState extends State<Home> {
       ),
       body: isLoading
       ? Center(child: CircularProgressIndicator())
+      : employees.isEmpty ? Text('No Data Yet...')
       : ListView.builder(
           itemCount: employees.length,
           itemBuilder: (context,index) => Card(
@@ -80,7 +85,7 @@ class _HomeState extends State<Home> {
         ),
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context) => AddEmployee(employeeDatabase: _empDB)));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => AddEmployee(myDatabase: _empDB)));
         },
         backgroundColor: Colors.blue,
         child: Icon(
