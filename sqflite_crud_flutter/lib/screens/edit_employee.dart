@@ -26,7 +26,6 @@ class _EditEmployeeState extends State<EditEmployee> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     //Pass the data on CONTROLLERS from Navigation.
     idController.text = '${widget.employee.id}';
