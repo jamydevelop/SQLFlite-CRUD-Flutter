@@ -25,13 +25,19 @@ class _AddEmployeeState extends State<EditEmployee> {
   final TextEditingController designationController = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
-
+  void initState() {
+    // TODO: implement initState
+    super.initState();
     //Pass the data on CONTROLLERS from Navigation.
     idController.text = '${widget.employee.empId}';
     nameController.text = widget.employee.empName;
     designationController.text = widget.employee.empDesignation;
     isFemale = widget.employee.isMale ? false : true;
+  }
+  @override
+  Widget build(BuildContext context) {
+
+
 
     return Scaffold(
       backgroundColor: Colors.grey[300],
