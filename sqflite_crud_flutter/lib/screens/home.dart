@@ -15,6 +15,7 @@ class _HomeState extends State<Home> {
 
   List<Employee> employees = List.empty(growable: true);
   bool isLoading = false;
+
   //Create instance of Database
   final MyDatabase _myDatabase = MyDatabase();
   int count = 0;
