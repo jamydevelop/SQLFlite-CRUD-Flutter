@@ -15,7 +15,6 @@ class _AddEmployeeState extends State<AddEmployee> {
   //for switch() widget
   bool isFemale = false;
 
-  final EmployeeDatabase _empDb = EmployeeDatabase();
   //focusNode
   final FocusNode _focusNode = FocusNode();
 

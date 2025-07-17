@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_crud_flutter/models/employee.dart';
 import 'package:sqflite_crud_flutter/screens/add_employee.dart';
 import 'package:sqflite_crud_flutter/screens/edit_employee.dart';
