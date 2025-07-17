@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_crud_flutter/models/employee.dart';
 import 'package:sqflite_crud_flutter/screens/add_employee.dart';
 import 'package:sqflite_crud_flutter/screens/edit_employee.dart';
+import 'package:sqflite_crud_flutter/services/employee_database.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -15,13 +17,25 @@ class _HomeState extends State<Home> {
   List<Employee> employees = List.empty(growable: true);
   bool isLoading = false;
 
+  //Initialized database
+  final EmployeeDatabase _empDB = EmployeeDatabase();
+
+    getAllData() async {
+    List<Map<String,Object?>> map = await _empDB.getAllEmpList();
+
+    for(int i = 0; i < map.length; i++) {
+      employees.add(Employee.toEmp(map[i]));
+    }
+  }
+
   @override
   void initState() {
-    employees.add(Employee(id: 1, name: 'Estes', desg: 'Roam', isMale: true));
-    employees.add(Employee(id: 2, name: 'Vexana', desg: 'Mage', isMale: false));
-    employees.add(Employee(id: 3, name: 'Ixia', desg: 'Marksman', isMale: false));
-    employees.add(Employee(id: 4, name: 'Phoveious', desg: 'Exp', isMale: true));
-    employees.add(Employee(id: 5, name: 'Hayabusa', desg: 'Jungle', isMale: true));
+    // employees.add(Employee(id: 1, name: 'Estes', desg: 'Roam', isMale: true));
+    // employees.add(Employee(id: 2, name: 'Vexana', desg: 'Mage', isMale: false));
+    // employees.add(Employee(id: 3, name: 'Ixia', desg: 'Marksman', isMale: false));
+    // employees.add(Employee(id: 4, name: 'Phoveious', desg: 'Exp', isMale: true));
+    // employees.add(Employee(id: 5, name: 'Hayabusa', desg: 'Jungle', isMale: true));
+    getAllData();
     super.initState();
   }
   @override
@@ -67,7 +81,7 @@ class _HomeState extends State<Home> {
         ),
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context) => const AddEmployee()));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => AddEmployee(employeeDatabase: _empDB)));
         },
         backgroundColor: Colors.blue,
         child: Icon(

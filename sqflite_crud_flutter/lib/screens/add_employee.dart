@@ -4,7 +4,8 @@ import 'package:sqflite_crud_flutter/screens/home.dart';
 import 'package:sqflite_crud_flutter/services/employee_database.dart';
 
 class AddEmployee extends StatefulWidget {
-  const AddEmployee({super.key});
+  final EmployeeDatabase employeeDatabase;
+  const AddEmployee({super.key, required this.employeeDatabase});
 
   @override
   State<AddEmployee> createState() => _AddEmployeeState();
@@ -122,7 +123,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                             isMale: !isFemale,
                           );
 
-                          await _empDb.insertEmp(emp);
+                          await widget.employeeDatabase.insertEmp(emp);
 
                           if(!mounted) return;
 
