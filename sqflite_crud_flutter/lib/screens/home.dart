@@ -64,7 +64,7 @@ class _HomeState extends State<Home> {
               onTap: () {
                 Navigator.push(context,
                   MaterialPageRoute(builder: (context) =>
-                    EditEmployee(employee: employees[index],)
+                    EditEmployee(emp: employees[index],myDatabase: _empDB)
                   ),
                 );
               },

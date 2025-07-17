@@ -63,4 +63,14 @@ class EmployeeDatabase {
     return await db.insert(tableName, employee.toMap());
   }
 
+  Future<int> updateEmp(Employee emp) async {
+    final db = await database;
+    return await db.update(
+      tableName,
+      emp.toMap(),
+      where: '$columnId = ?',
+      whereArgs: [emp.id]
+    );
+  }
+
 }
