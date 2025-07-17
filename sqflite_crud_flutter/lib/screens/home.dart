@@ -84,14 +84,14 @@ class _HomeState extends State<Home> {
                 backgroundColor:  employees[index].isMale ? Colors.blue[300] : Colors.pink[300],
                 child: Icon(employees[index].isMale ? Icons.male : Icons.female, color: Colors.white),
               ),
-              title: Text('${employees[index].empName} (${employees[index].empId})',
+              title: Text('${employees[index].name} (${employees[index].id})',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
-              subtitle: Text(employees[index].empDesignation),
+              subtitle: Text(employees[index].desg),
               trailing: IconButton(
                 onPressed: () async {
 
-                  String name = employees[index].empName;
+                  String name = employees[index].name;
 
                   await _myDatabase.deleteEmp(employees[index]);
 

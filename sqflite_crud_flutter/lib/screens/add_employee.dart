@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:sqflite_crud_flutter/database/my_database.dart';
 import 'package:sqflite_crud_flutter/models/employee.dart';
 import 'package:sqflite_crud_flutter/screens/home.dart';
-import 'package:sqflite_crud_flutter/services/employee_database.dart';
+
 
 class AddEmployee extends StatefulWidget {
   final MyDatabase myDatabase;
@@ -120,9 +121,9 @@ class _AddEmployeeState extends State<AddEmployee> {
                         onPressed: () async {
                           Employee employee = Employee(
 
-                            empId: int.parse(idController.text),
-                            empName: nameController.text,
-                            empDesignation: designationController.text,
+                            id: int.parse(idController.text),
+                            name: nameController.text,
+                            desg: designationController.text,
                             isMale: !isFemale);
 
                             await widget.myDatabase.insertEmp(employee);

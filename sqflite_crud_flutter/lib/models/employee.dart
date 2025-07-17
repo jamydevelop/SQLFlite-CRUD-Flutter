@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
+import 'dart:nativewrappers/_internal/vm/lib/ffi_native_type_patch.dart';
 
 Employee toEmployee(Map<String, Object?> map) => Employee.toEmp(map);
 
@@ -37,6 +38,7 @@ class Employee {
       id: map['id'] as int,
       name: map['name'] as String,
       desg: map['desg'] as String,
+      isMale: map['isMale'] as bool,
     );
   }
 
