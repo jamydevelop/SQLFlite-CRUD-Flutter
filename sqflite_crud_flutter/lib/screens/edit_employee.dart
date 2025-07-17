@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:sqflite_crud_flutter/database/my_database.dart';
 import 'package:sqflite_crud_flutter/models/employee.dart';
 import 'package:sqflite_crud_flutter/screens/home.dart';
-import 'package:sqflite_crud_flutter/services/employee_database.dart';
 
 class EditEmployee extends StatefulWidget {
-  final EmployeeDatabase myDatabase;
-  final Employee emp;
-  const EditEmployee({super.key,required this.myDatabase, required this.emp});
+  final MyDatabase mydatabase;
+  final Employee employee;
+  const EditEmployee({super.key, required this.employee, required this.mydatabase});
 
   @override
   State<EditEmployee> createState() => _EditEmployeeState();
 }
 
 class _EditEmployeeState extends State<EditEmployee> {
-
-
-
   //for switch() widget
   bool isFemale = false;
 
@@ -28,11 +25,20 @@ class _EditEmployeeState extends State<EditEmployee> {
   final TextEditingController designationController = TextEditingController();
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    //Pass the data on CONTROLLERS from Navigation.
+    idController.text = '${widget.employee.empId}';
+    nameController.text = widget.employee.empName;
+    designationController.text = widget.employee.empDesignation;
+    isFemale = widget.employee.isMale ? false : true;
+  }
+  @override
   Widget build(BuildContext context) {
-    idController.text = '$widget.emp.id';
-    nameController.text = widget.emp.name;
-    designationController.text = widget.emp.name;
-    isFemale = widget.emp.isMale ? false : true;
+
+
+
     return Scaffold(
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
@@ -53,7 +59,8 @@ class _EditEmployeeState extends State<EditEmployee> {
             children: <Widget>[
               // Emp Id
               TextField(
-                //focusNode: _focusNode,
+                enabled: false,
+                focusNode: _focusNode,
                 controller: idController,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
@@ -123,20 +130,20 @@ class _EditEmployeeState extends State<EditEmployee> {
                           shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(8.0))
                         ),
                         onPressed: () async {
-                          Employee employee = Employee(
-                            id: int.parse(idController.text),
-                            name: nameController.text,
-                            desg: designationController.text,
+                           Employee employee = Employee(
+                            empId: int.parse(idController.text),
+                            empName: nameController.text,
+                            empDesignation: designationController.text,
                             isMale: !isFemale);
 
-                            await widget.myDatabase.updateEmp(employee);
+                            await widget.mydatabase.updateEmp(employee);
 
                             if(!mounted) return;
 
                               //Show snackbar if added.
                               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                backgroundColor: Colors.green,
-                                content: Text('${employee.name} is added!')));
+                                backgroundColor: Colors.orange,
+                                content: Text('${employee.empName} is updated!')));
 
                               //Navigate to previous route.
                               Navigator.pushAndRemoveUntil(
@@ -148,7 +155,7 @@ class _EditEmployeeState extends State<EditEmployee> {
 
                         },
                         child: Text(
-                          'Add',
+                          'Update',
                           style: TextStyle(color: Colors.white),
                         ),
                       ),

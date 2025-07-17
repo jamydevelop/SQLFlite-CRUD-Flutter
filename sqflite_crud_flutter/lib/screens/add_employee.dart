@@ -4,7 +4,7 @@ import 'package:sqflite_crud_flutter/screens/home.dart';
 import 'package:sqflite_crud_flutter/services/employee_database.dart';
 
 class AddEmployee extends StatefulWidget {
-  final EmployeeDatabase myDatabase;
+  final MyDatabase myDatabase;
   const AddEmployee({super.key,required this.myDatabase});
 
   @override
@@ -119,9 +119,10 @@ class _AddEmployeeState extends State<AddEmployee> {
                         ),
                         onPressed: () async {
                           Employee employee = Employee(
-                            id: int.parse(idController.text),
-                            name: nameController.text,
-                            desg: designationController.text,
+
+                            empId: int.parse(idController.text),
+                            empName: nameController.text,
+                            empDesignation: designationController.text,
                             isMale: !isFemale);
 
                             await widget.myDatabase.insertEmp(employee);
@@ -131,7 +132,9 @@ class _AddEmployeeState extends State<AddEmployee> {
                               //Show snackbar if added.
                               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                 backgroundColor: Colors.green,
+
                                 content: Text('${employee.name} is added!')));
+
 
                               //Navigate to previous route.
                               Navigator.pushAndRemoveUntil(
